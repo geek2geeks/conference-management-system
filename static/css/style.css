@@ -1,0 +1,31 @@
+.portal {
+    width: 40%;
+    height: 100%;
+    margin-top:5%;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 1.4;
+    border: 1px solid black;
+    background-color: lightgray;
+}
+.body {
+  font-family: Arial, sans-serif;
+}
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+}
+.navbar a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
