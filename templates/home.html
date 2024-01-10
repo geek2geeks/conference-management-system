@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Page</title>    
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
     <div class="navbar">
-      <a href="#" style="color: lightseagreen">Home</a>
-      <a href="#">Services</a>
-      <a href="#">Contact</a>
-      <a href="#">About</a>
-      <a href="login.html">Login</a>
+      <a href="{{ url_for('home') }}" style="color: lightseagreen">Home</a>
+      <a href="{{ url_for('services') }}">Services</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('login') }}">Login</a>
     </div>
 
     <div class="content">
@@ -27,3 +27,4 @@
     </div>
   </body>
 </html>
+
