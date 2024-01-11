@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Meta tags and title -->
+    <!-- Meta tags  -->
+    <title>Login Page</title>
     <!-- The CSS file is linked relatively to the 'static' folder in Flask. 
          Ensure 'style.css' is located in 'static/css/style.css' -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
-    <!-- Navbar here -->
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('services') }}">Services</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('login') }}" style="color: lightseagreen">Login</a>
+    </div>
     <div class="portal">
         <h2>Login Portal</h2>
         {% if error %}
@@ -23,7 +30,7 @@
         </form>
         <br />
         <!-- Link to the signup page uses Flask's url_for for dynamic URL generation -->
-        <button onclick="window.location.href='{{ url_for("signup") }}';">Sign Up</button>
+        <button onclick="window.location.href='{{ url_for("signup")}}'">Sign Up</button>
     </div>
 </body>
 </html>
