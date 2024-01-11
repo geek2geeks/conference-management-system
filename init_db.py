@@ -1,12 +1,11 @@
-import os
 import psycopg2
 
 # Connect to the database
 conn = psycopg2.connect(
     host="localhost",
     database="flaskdb",
-    user='postgres',        # Replace with os.environ["DB_USERNAME"] in production
-    password='darTesw')     # Replace with os.environ["DB_PASSWORD"] in production
+    user=input("Postgres master user: "),        		#prompt for postgreSQL master user-name
+    password=input("Postgres master password: "))     	#prompt for postgreSQL master password
 
 # Create a cursor for executing queries
 cur = conn.cursor()
