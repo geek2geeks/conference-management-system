@@ -5,17 +5,17 @@ conn = psycopg2.connect(
     host="localhost",
     database="flaskdb",
     # user=input("PostgreSQL master user: "),
-    user=("postgres"),
+    user=("log"),
     # password=input("PostgreSQL master password: ")
-    password=("darTesw")
+    password=("log123")
 )
 
 # Cursor for executing queries
 cur = conn.cursor()
 
 # Insert new user first name, last name into table --- Change to allow for code to be used for new customer by allowing input for table
-f_name = "Beta"     # Change to accept input
-l_name = "Bot"      # Change to accept input
+f_name = "John"     # Change to accept input
+l_name = "Doe"      # Change to accept input
 query_insert = "INSERT INTO staff_accounts (first_name, last_name) VALUES (%s, %s)"     # SQL query to insert first name, last name into staff_accounts with place holders
 cur.execute(query_insert, (f_name, l_name))     # Run query w/ placeholders defined
 
@@ -42,7 +42,7 @@ cur.execute(query_select, (staff_id,))      # Execute query w/ placeholders
 key = cur.fetchall()        # Get row
 print(key)      # Testing purposes only --- REMOVE
 
-#conn.commit() --- Commented out whilst testing
+conn.commit() 
 
 cur.close()     # Close cursor
 
