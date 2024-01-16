@@ -36,7 +36,7 @@ cur.execute("CREATE TABLE customer_accounts ("
             "first_name VARCHAR(25) NOT NULL,"
             "last_name VARCHAR(45) NOT NULL,"
             "email VARCHAR(50) NOT NULL,"
-            "phone_number INTEGER,"
+            "phone_number BIGINT,"
             "company VARCHAR(50));")
 
 # Create table for customer keys
