@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
+from login import Portal
 
 app = Flask(__name__)
 
+log = Portal()
 
 @app.route('/')
 def home():
@@ -13,9 +15,10 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        # Here, add logic to verify email and password with the database
-        # If login fails, set error = 'Invalid credentials. Please try again.'
-        # If successful, redirect to user dashboard or another appropriate page
+        error = login.auth_customer(email, password)
+        if error == 'None':
+            #render_template()       # Render customer welcome page or profile page??
+            print("login successful")
     return render_template('login.html', error=error)
 
 
@@ -29,11 +32,13 @@ def signup():
         contact_number = request.form['contact_number']
         company = request.form['company']
         password = request.form['password']
-        password_confirm = request.form['password_confirm']
+        password_confirm = request.form['password_confirm']       
 
         if password != password_confirm:
             error = 'Passwords do not match.'
         else:
+            # Check whether email alread exists within table
+            log.new_customer(first_name, last_name, email, contact_number, company, password)
             # Here, insert the new user data into the database
             # Also, handle potential errors such as email already exists
             pass
