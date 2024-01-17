@@ -22,26 +22,25 @@ def login():
     return render_template('login.html', error=error)
 
 
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    error = None
-    if request.method == 'POST':
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
-        email = request.form['email']
-        contact_number = request.form['contact_number']
-        company = request.form['company']
-        password = request.form['password']
-        password_confirm = request.form['password_confirm']       
+@app.route('/signup', methods=['GET', 'POST'])      # Define signup route
+def signup():       # Define signup method
+    error = None        # Define error variable
+    if request.method == 'POST':        # If request is POST
+        first_name = request.form['first_name']     # Get first name
+        last_name = request.form['last_name']       # Get last name
+        email = request.form['email']       # Get email
+        contact_number = request.form['contact_number']     # Get contact number
+        company = request.form['company']       # Get company name
+        password = request.form['password']     # Get password
+        password_confirm = request.form['password_confirm']     # Get password confirmation    
 
-        if password != password_confirm:
-            error = 'Passwords do not match.'
+        if password != password_confirm:        # Check whether passwords match and handle error
+            error = 'Passwords do not match.'       # Return error message
         else:
-            # Check whether email alread exists within table
-            log.new_customer(first_name, last_name, email, contact_number, company, password)
-            # Here, insert the new user data into the database
-            # Also, handle potential errors such as email already exists
-            pass
+            # Check whether email alread exists within table and handle error
+            log.new_customer(first_name, last_name, email, contact_number, company, password)       # Call new_customer method from login.py
+            print("Sign up successful")
+            pass        
         # If successful, redirect to login page or another appropriate page
     return render_template('signUp.html', error=error)
 
