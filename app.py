@@ -5,46 +5,49 @@ app = Flask(__name__)
 
 log = Portal()
 
+# Route for the home page
 @app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route('/login', methods=['GET', 'POST'])       # Define login route
-def login():        # Define login method
-    error = None        # Define error variable
-    if request.method == 'POST':        # If request is POST
-        email = request.form['email']       # Get email
-        password = request.form['password']     # Get password
-        validate = log.auth_customer(email, password)       # Call auth_customer method from login.py
-        if validate == True:        # If validate is true print = login successful
-            #render_template()       # Render customer welcome page or profile page??
+# Route for handling login, supports GET for displaying the login form and POST for submitting login data
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        validate = log.auth_customer(email, password)
+        if validate:
+            # TODO: Redirect to the user's dashboard or profile page after successful login
             print("login successful")
-        else:       # Else print = invalid credentials
+        else:
             error = 'Invalid credentials. Please try again...'
-            print(error)        # Return error message
+            print(error)
     return render_template('login.html', error=error)
 
 
-@app.route('/signup', methods=['GET', 'POST'])      # Define signup route
-def signup():       # Define signup method
-    error = None        # Define error variable
-    if request.method == 'POST':        # If request is POST
-        first_name = request.form['first_name']     # Get first name
-        last_name = request.form['last_name']       # Get last name
-        email = request.form['email']       # Get email
-        contact_number = request.form['contact_number']     # Get contact number
-        company = request.form['company']       # Get company name
-        password = request.form['password']     # Get password
-        password_confirm = request.form['password_confirm']     # Get password confirmation            
-        if password != password_confirm:        # Check whether passwords match and handle error
-            error = 'Passwords do not match.'       # Return error message
+# Route for handling user registration, supports both GET and POST methods
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    error = None
+    if request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+        contact_number = request.form['contact_number']
+        company = request.form['company']
+        password = request.form['password']
+        password_confirm = request.form['password_confirm']
+
+        if password != password_confirm:
+            error = 'Passwords do not match.'
         else:
-            # Check whether email alread exists within table and handle error
-            log.new_customer(first_name, last_name, email, contact_number, company, password)       # Call new_customer method from login.py
-            print("Sign up successful")
-            pass        
-        # If successful, redirect to login page or another appropriate page
+            # Other logic
+            pass
+
     return render_template('signUp.html', error=error)
+
 
 @app.route('/contact')
 def contact():

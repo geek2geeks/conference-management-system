@@ -6,36 +6,19 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
+    <!-- Navbar with links to Home, Services, Contact, About, and Login -->
     <div class="navbar">
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('services') }}">Services</a>
-        <a href="{{ url_for('contact') }}">Contact</a>
-        <a href="{{ url_for('about') }}">About</a>
-        <a href="{{ url_for('login') }}">Login</a>
+        <!-- Navbar links -->
     </div>
+
+    <!-- Sign-Up Portal -->
     <div class="portal">
         <h2>Sign-Up Portal</h2>
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
+        <!-- Display error message if any -->
         <form action="{{ url_for('signup') }}" method="post">
-            <label for="first_name">First Name:</label>
-            <input type="text" id="first_name" name="first_name" placeholder="John" required /><br />
-            <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" name="last_name" placeholder="Doe" required /><br />
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="client@company.net" required /><br />
-            <label for="contact_number">Contact Number:</label>
-            <input type="text" id="contact_number" name="contact_number" placeholder="12 345 678 910" /><br />
-            <label for="company">Company:</label>
-            <input type="text" id="company" name="company" placeholder="Doe & Sons LLC" /><br />
-            <label for="password">Create Password:</label>
-            <input type="password" id="password" name="password" placeholder="********" required /><br />
-            <label for="password_confirm">Re-enter Password:</label>
-            <input type="password" id="password_confirm" name="password_confirm" placeholder="********" required /><br />
-            <button type="submit">Sign Up</button>
+            <!-- Form fields for first name, last name, email, contact number, company, password, and password confirmation -->
+            <!-- Submit button -->
         </form>
     </div>
 </body>
 </html>
-

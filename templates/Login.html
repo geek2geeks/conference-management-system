@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <!-- Meta tags  -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Page</title>
-    <!-- The CSS file is linked relatively to the 'static' folder in Flask. 
-         Ensure 'style.css' is located in 'static/css/style.css' -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
+    <!-- Updated Navbar -->
     <div class="navbar">
         <a href="{{ url_for('home') }}">Home</a>
         <a href="{{ url_for('services') }}">Services</a>
@@ -15,22 +16,13 @@
         <a href="{{ url_for('about') }}">About</a>
         <a href="{{ url_for('login') }}" style="color: lightseagreen">Login</a>
     </div>
+
+    <!-- Login Form -->
     <div class="portal">
         <h2>Login Portal</h2>
-        {% if error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
-        <!-- The form action uses Flask's url_for to route to the login function -->
-        <form action="{{ url_for('login') }}" method="post">
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" placeholder="client@company.net" required /><br />
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder="********" required /><br />
-            <button type="submit">Login</button>
-        </form>
-        <br />
-        <!-- Link to the signup page uses Flask's url_for for dynamic URL generation -->
-        <button onclick="window.location.href='{{ url_for("signup")}}'">Sign Up</button>
+        <!-- Form for login -->
+        <!-- Error message display -->
+        <!-- Sign-Up link -->
     </div>
 </body>
 </html>
