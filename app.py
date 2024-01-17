@@ -17,8 +17,8 @@ def login():        # Define login method
         password = request.form['password']     # Get password
         validate = log.auth_customer(email, password)       # Call auth_customer method from login.py
         if validate == True:        # If validate is true print = login successful
-            #render_template()       # Render customer welcome page or profile page??
             print("login successful")
+            return render_template('dashboard.html')            
         else:       # Else print = invalid credentials
             error = 'Invalid credentials. Please try again...'
             print(error)        # Return error message
@@ -42,8 +42,7 @@ def signup():       # Define signup method
             # Check whether email alread exists within table and handle error
             log.new_customer(first_name, last_name, email, contact_number, company, password)       # Call new_customer method from login.py
             print("Sign up successful")
-            pass        
-        # If successful, redirect to login page or another appropriate page
+            return render_template('dashboard.html')
     return render_template('signUp.html', error=error)
 
 @app.route('/contact')
@@ -85,6 +84,7 @@ def book():
 
 @app.route('/dashboard')
 def dashboard():
+    
     # Ensure user is logged in
     return render_template('dashboard.html')
 
