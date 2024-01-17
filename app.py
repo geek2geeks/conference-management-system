@@ -9,16 +9,19 @@ log = Portal()
 def home():
     return render_template('home.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        error = login.auth_customer(email, password)
-        if error == 'None':
+@app.route('/login', methods=['GET', 'POST'])       # Define login route
+def login():        # Define login method
+    error = None        # Define error variable
+    if request.method == 'POST':        # If request is POST
+        email = request.form['email']       # Get email
+        password = request.form['password']     # Get password
+        validate = log.auth_customer(email, password)       # Call auth_customer method from login.py
+        if validate == True:        # If validate is true print = login successful
             #render_template()       # Render customer welcome page or profile page??
             print("login successful")
+        else:       # Else print = invalid credentials
+            error = 'Invalid credentials. Please try again...'
+            print(error)        # Return error message
     return render_template('login.html', error=error)
 
 
@@ -32,8 +35,7 @@ def signup():       # Define signup method
         contact_number = request.form['contact_number']     # Get contact number
         company = request.form['company']       # Get company name
         password = request.form['password']     # Get password
-        password_confirm = request.form['password_confirm']     # Get password confirmation    
-
+        password_confirm = request.form['password_confirm']     # Get password confirmation            
         if password != password_confirm:        # Check whether passwords match and handle error
             error = 'Passwords do not match.'       # Return error message
         else:
