@@ -5,12 +5,35 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
-    <!-- ... navbar ... -->
+    <!-- Navbar for easy navigation -->
+    <nav>
+        <!-- Add navbar items (e.g., Home, Services, Contact, Login/Logout, Dashboard) -->
+    </nav>
+
     <div class="content">
         <h1>Book a Conference</h1>
-        <!-- Placeholder for the booking form and information -->
-        <!-- You'll need to add a form here for users to input their booking details -->
+        <form method="post" action="/book">
+            <label for="facility">Select Facility:</label>
+            <select name="facility" id="facility">
+                <!-- Add options for different facilities -->
+            </select>
+
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date">
+
+            <label for="time">Select Time:</label>
+            <input type="time" id="time" name="time">
+
+            <label for="additional-requests">Additional Requests:</label>
+            <textarea id="additional-requests" name="additional-requests"></textarea>
+
+            <input type="submit" value="Book Now">
+        </form>
+
+        <!-- Links for viewing and managing past bookings -->
+        <a href="/manage_bookings">View/Manage Past Bookings</a>
     </div>
+
+    <!-- Ensure the page is responsive and accessible -->
 </body>
 </html>
-
