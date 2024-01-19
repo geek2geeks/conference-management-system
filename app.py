@@ -27,6 +27,12 @@ def login():
     return render_template('login.html', error=error)
 
 
+@app.route('/reset_password')
+def reset_password():
+    # Logic for resetting password
+    return render_template('reset_password.html')
+
+
 # Route for handling user registration, supports both GET and POST methods
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

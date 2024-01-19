@@ -8,16 +8,51 @@
 <body>
     <!-- Navbar with links to Home, Services, Contact, About, and Login -->
     <div class="navbar">
-        <!-- Navbar links -->
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('services') }}">Services</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('login') }}" style="color: lightseagreen">Login</a>
     </div>
 
+    <!-- Sign-Up Portal -->
     <!-- Sign-Up Portal -->
     <div class="portal">
         <h2>Sign-Up Portal</h2>
         <!-- Display error message if any -->
         <form action="{{ url_for('signup') }}" method="post">
-            <!-- Form fields for first name, last name, email, contact number, company, password, and password confirmation -->
-            <!-- Submit button -->
+            <!-- Form for user registration -->
+
+            <!-- Field for First Name -->
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required />
+
+            <!-- Field for Last Name -->
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required />
+
+            <!-- Field for Email -->
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required />
+
+            <!-- Field for Contact Number -->
+            <label for="contact_number">Contact Number:</label>
+            <input type="text" id="contact_number" name="contact_number" />
+
+            <!-- Field for Company Name (optional) -->
+            <label for="company">Company:</label>
+            <input type="text" id="company" name="company" />
+
+            <!-- Field for Password -->
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required />
+
+            <!-- Field for Confirming Password -->
+            <label for="password_confirm">Confirm Password:</label>
+            <input type="password" id="password_confirm" name="password_confirm" required />
+
+            <!-- Submit Button -->
+            <button type="submit">Sign Up</button>
         </form>
     </div>
 </body>
