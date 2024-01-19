@@ -31,13 +31,13 @@ class Portal:       # Define class
     # Method to check if current block is valid
     def check_curr_block(self):     # Pass current block
         try:        # Try to execute query
-            self.cur.execute("SELECT * FROM staff_accounts")        # Query to check if current block is valid
-            self.conn.commit()      # Commit changes to database
+            self.cur.execute("SELECT * FROM staff_accounts")        # Query to check if current block is valid            
         except psycopg2.errors.InFailedSqlTransaction as e:     # If query fails
             if isinstance(e, psycopg2.DatabaseError) and "aborted" in str(e):       # If query fails due to aborted transaction
-                self.conn.rollback()        # 
+                self.conn.rollback()        
+                self.conn.cursor()  
             else:       # If query fails due to other reason
-                None        # Do nothing        
+                print("Error: ", e)      
 
     # Method to authenticate staff credentials
     def auth_staff(self, user, key):      # Pass user name & password
@@ -105,7 +105,7 @@ class Portal:       # Define class
         self.hash(table, customer_id, password)     # Call hash method to hash password
         self.conn.commit()      # Commit changes to database
         self.close_conn()       # Close connection
-        return (True, id, 'customer')      # Return true, id and customer
+        return (True, customer_id, 'customer')      # Return true, id and customer
     
 
     def check_exists(self, email):
