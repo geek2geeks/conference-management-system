@@ -48,7 +48,7 @@ def signup():
             exists = log.check_exists(email)            # Check whether email alread exists within table and handle error
             if exists == True:
                 error = 'Email already exists.'
-                return render_template('signUp.html', error=error)
+                #return render_template('signUp.html', error=error)
             else:
                 validate = log.new_customer(first_name, last_name, email, contact_number, company, password)       # Call new_customer method from login.py
                 print("Sign up successful")
@@ -100,7 +100,7 @@ def dashboard():
     else:
         print("not logged in")
         return redirect(url_for('login'))      # Redirect to login page
-
+    
 
 @app.route('/about')
 def about():
