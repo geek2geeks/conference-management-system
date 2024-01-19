@@ -22,6 +22,14 @@
     <div class="portal">
         <h2>Login Portal</h2>
         <!-- Form for login -->
+        <form method="post">
+            <label for="email">Email:</label><br>
+            <input type="text" id="email" name="email"><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password"><br>
+            <input type="submit" value="Submit">
+            <input type="signup" value="Sign Up" onclick="location.href='{{ url_for('signup') }}'"> <!-- Sign-Up link -->
+        </form>
         <!-- Error message display -->
         <!-- Sign-Up link -->
     </div>
