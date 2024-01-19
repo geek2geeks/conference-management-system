@@ -37,7 +37,7 @@ class Portal:       # Define class
             if isinstance(e, psycopg2.DatabaseError) and "aborted" in str(e):       # If query fails due to aborted transaction
                 self.conn.rollback()        # 
             else:       # If query fails due to other reason
-                None        # Do nothing
+                None        # Do nothing        
 
     # Method to authenticate staff credentials
     def auth_staff(self, user, key):      # Pass user name & password
@@ -57,18 +57,27 @@ class Portal:       # Define class
 
     # Method to authenticate customer credentials    
     def auth_customer(self, email, key):        # Pass email & password
-        self.check_curr_block()     # Check if current block is valid 
-        query = "SELECT customer_id FROM customer_accounts WHERE email = %s"        # Query to get id for email
-        self.cur.execute(query, (email,))       # Execute query
-        id = self.cur.fetchone()        # Define fetched customer id as id
-        query = "SELECT key FROM customer_keys WHERE customer_id = %s"      # Query to select password with matching id for comparison
-        self.cur.execute(query, (id,))      # Execute query
-        stored_key = self.cur.fetchone()        # Define fetched encrypted password
-        stored_key_bytes = stored_key[0].tobytes()      # Convert to bytes for comparison
-        if stored_key and bcrypt.checkpw(key.encode('utf-8'), stored_key_bytes):        # If stored password matches key return true
-            return True     
-        else:       # Else return false
-            return False
+        exists = self.check_exists(email)        # Check if email exists
+        if exists == False:     # If email does not exist return false
+            return (False, None, None)
+        elif email is None:     # If email is none return false
+            return (False, None, None)
+        else:
+            self.check_curr_block()     # Check if current block is valid 
+            query = "SELECT customer_id FROM customer_accounts WHERE email = %s"        # Query to get id for email
+            self.cur.execute(query, (email,))       # Execute query
+            id = self.cur.fetchone()        # Define fetched customer id as id
+            query = "SELECT key FROM customer_keys WHERE customer_id = %s"      # Query to select password with matching id for comparison
+            self.cur.execute(query, (id,))      # Execute query
+            stored_key = self.cur.fetchone()        # Define fetched encrypted password
+            stored_key_bytes = stored_key[0].tobytes()      # Convert to bytes for comparison
+            if stored_key and bcrypt.checkpw(key.encode('utf-8'), stored_key_bytes):        # If stored password matches key return true
+                self.close_conn()       # Close connection
+                return (True, id, 'customer')      
+            else:       # Else return false
+                self.close_conn()       # Close connection
+                return (False, None, None)
+        
 
     # Method to create new staff account and store encrypted password
     def new_staff(self, f_name, l_name, password):      # Pass first name, last name, password
@@ -96,3 +105,15 @@ class Portal:       # Define class
         self.hash(table, customer_id, password)     # Call hash method to hash password
         self.conn.commit()      # Commit changes to database
         self.close_conn()       # Close connection
+        return (True, id, 'customer')      # Return true, id and customer
+    
+
+    def check_exists(self, email):
+        self.check_curr_block()     # Check if current block is valid
+        query = "SELECT email FROM customer_accounts WHERE email = %s"
+        self.cur.execute(query, (email,))
+        email = self.cur.fetchone()
+        if email:
+            return True
+        else:
+            return False
