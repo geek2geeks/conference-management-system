@@ -29,6 +29,22 @@ def login():        # Define login method
             print(error)
     return render_template('login.html', error=error)
 
+@app.route('/admin_login', methods=['GET', 'POST'])       # Define admin login route
+def admin_login(): 
+    error = None
+    if request.method == 'POST':
+        user_name = request.form['user_name']
+        password = request.form['password']
+        validate = log.auth_staff(user_name, password)     # Call auth_staff method from login.py
+        if validate[0] == True:
+            session['logged_in'] = validate[0]     # Set session logged in status
+            session['user_id'] = validate[1]       # Set session user id
+            session['user_type'] = validate[2]     # Set session user type
+            return redirect(url_for('admin_panel'))
+        else:
+            error = 'Invalid credentials. Please try again...'
+            print(error)
+    return render_template('admin_login.html', error=error)
 
 @app.route('/reset_password')
 def reset_password():
@@ -81,11 +97,12 @@ def manage_bookings():
     return render_template('manage_bookings.html')
 
 
-@app.route('/admin')
-def admin():
-    # Ensure user is an admin
-    # Logic to manage users, bookings, facilities, etc.
-    return render_template('admin_panel.html')
+@app.route('/admin_panel', methods=['GET', 'POST'])
+def admin_panel():
+    if session.get('logged_in') == True:       # Get session logged in status
+        return render_template('admin_panel.html')       
+    else:
+        return redirect(url_for('admin_login'))      # Redirect to login page
 
 
 
