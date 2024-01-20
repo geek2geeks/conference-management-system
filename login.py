@@ -42,6 +42,7 @@ class Portal:       # Define class
     # Method to authenticate staff credentials
     def auth_staff(self, user, key):      # Pass user name & password
         self.check_curr_block()     # Check if current block is valid   
+        ### Error handling for user name ###
         query = "SELECT staff_id FROM staff_accounts WHERE user_name = %s"      # Query to get id for user name
         self.cur.execute(query, (user,))     # Execute query
         id = self.cur.fetchone()     # Define fetched staff id as id
