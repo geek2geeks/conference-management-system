@@ -1,39 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Book Conference</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-</head>
-<body>
-    <!-- Navbar for easy navigation -->
-    <nav>
-        <!-- Add navbar items (e.g., Home, Services, Contact, Login/Logout, Dashboard) -->
-    </nav>
+{% extends "base.html" %}
 
-    <div class="content">
-        <h1>Book a Conference</h1>
-        <form method="post" action="/book">
-            <label for="facility">Select Facility:</label>
-            <select name="facility" id="facility">
-                <!-- Add options for different facilities -->
-            </select>
+{% block title %}
+Book Conference
+{% endblock %}
 
-            <label for="date">Select Date:</label>
-            <input type="date" id="date" name="date">
+{% block content %}
+<div class="content">
+    <h1>Book a Conference</h1>
+    <form method="post" action="/book">
+        <label for="facility">Select Facility:</label>
+        <select name="facility" id="facility">
+            <!-- Add options for different facilities -->
+        </select>
 
-            <label for="time">Select Time:</label>
-            <input type="time" id="time" name="time">
+        <label for="date">Select Date:</label>
+        <input type="date" id="date" name="date">
 
-            <label for="additional-requests">Additional Requests:</label>
-            <textarea id="additional-requests" name="additional-requests"></textarea>
+        <label for="time">Select Time:</label>
+        <input type="time" id="time" name="time">
 
-            <input type="submit" value="Book Now">
-        </form>
+        <label for="additional-requests">Additional Requests:</label>
+        <textarea id="additional-requests" name="additional-requests"></textarea>
 
-        <!-- Links for viewing and managing past bookings -->
-        <a href="/manage_bookings">View/Manage Past Bookings</a>
-    </div>
+        <input type="submit" value="Book Now">
+    </form>
 
-    <!-- Ensure the page is responsive and accessible -->
-</body>
-</html>
+    <!-- Links for viewing and managing past bookings -->
+    <a href="/manage_bookings">View/Manage Past Bookings</a>
+</div>
+{% endblock %}
