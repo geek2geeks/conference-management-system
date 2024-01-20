@@ -29,6 +29,7 @@ cur.execute("CREATE EXTENSION IF NOT EXISTS pgcrypto;")     # Create extension f
 cur.execute("CREATE DOMAIN meal VARCHAR(8) CHECK(VALUE IN ('buffet', 'platter'));")     # Create domain for meal type
 cur.execute("CREATE DOMAIN payment_method VARCHAR(16) CHECK(VALUE IN ('visa', 'mastercard', 'american express'));")     # Create domain for payment methods
 cur.execute("CREATE DOMAIN status VARCHAR(9) CHECK(VALUE IN ('booked', 'past', 'cancelled'));")     # Create domain for booking status
+cur.execute("CREATE DOMAIN staff_role VARCHAR(7) CHECK(VALUE IN ('general', 'admin'));")     # Create domain for user type
 
 # Create table for customer accounts
 cur.execute("CREATE TABLE customer_accounts ("
@@ -49,6 +50,7 @@ cur.execute("CREATE TABLE staff_accounts ("
             "staff_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,"
             "first_name VARCHAR(25) NOT NULL,"
             "last_name VARCHAR(45) NOT NULL,"
+            "role staff_role NOT NULL,"
             "user_name VARCHAR(50));")
 
 # Create table for staff keys
@@ -101,6 +103,26 @@ cur.execute("CREATE TABLE bookings ("
             "cancel_reason TEXT,"
             "payment_id_foreign INTEGER REFERENCES payment_methods (payment_id),"
             "price DECIMAL);")
+
+# Create admin account 
+first_name = input("Admin first name: ")
+last_name = input("Admin last name: ")
+user_name = input("Admin user name: ")
+password = input("Admin password: ")
+password_check = input("Confirm password: ")
+
+# Check if passwords match
+while password != password_check or password == '':     # Check if passwords match
+    print("Passwords do not match.")
+    password = input("Admin password: ")
+    password_check = input("Confirm password: ")
+
+# Insert admin account into staff_accounts and store encrypted password in staff_keys
+cur.execute("INSERT INTO staff_accounts (first_name, last_name, role, user_name) VALUES (%s, %s, 'admin', %s) RETURNING staff_id", (first_name, last_name, user_name,))     # Run query w/ placeholders defined
+conn.commit()       # Commit changes to database
+staff_id = cur.fetchone()[0]      # Fetch staff id
+query = "INSERT INTO staff_keys (staff_id, key) VALUES (%s, crypt(%s, gen_salt('bf'))::bytea);"
+cur.execute(query, (staff_id, password,))        # Execute query w/ placeholders defined
 
 # Commit the transaction to the database
 conn.commit()
