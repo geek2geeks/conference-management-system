@@ -13,7 +13,14 @@
         <a href="{{ url_for('services') }}">Services</a>
         <a href="{{ url_for('contact') }}">Contact</a>
         <a href="{{ url_for('about') }}">About</a>
-        <a href="{{ url_for('login') }}">Login</a>
+        
+        {% if session.get('logged_in') == True %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+
+        <a href="{{ url_for('admin_panel') }}">Admin Panel</a>
     </div>
 
     {% block content %}
