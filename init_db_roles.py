@@ -28,7 +28,7 @@ cur.execute("GRANT INSERT ON TABLE customer_accounts TO log")
 cur.execute("GRANT INSERT ON TABLE staff_keys TO log")
 cur.execute("GRANT INSERT ON TABLE customer_keys TO log")
 cur.execute("GRANT UPDATE ON TABLE staff_keys TO log")                      # Grant update privilege
-cur.execute("GRANT UPDATE (user_name) ON TABLE staff_accounuts")
+cur.execute("GRANT UPDATE (user_name) ON TABLE staff_accounts TO log")
 cur.execute("GRANT UPDATE ON TABLE customer_keys TO log")
 
 # Create database role to handle client privileges
