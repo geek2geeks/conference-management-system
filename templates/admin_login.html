@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Login Page
+{% endblock %}
+
+{% block content %}
+<div class="portal">
+    <h2>Login Portal</h2>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    <form action="{{ url_for('admin_login') }}" method="post">
+        <label for="user_name">User Name:</label>
+        <input type="user_name" id="user_name" name="user_name" placeholder="Enter your user name" required />
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required />
+        <button type="submit">Login</button>
+    </form>
+</div>
+{% endblock %}
