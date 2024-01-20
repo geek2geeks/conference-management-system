@@ -35,9 +35,22 @@ class Portal:       # Define class
         except psycopg2.errors.InFailedSqlTransaction as e:     # If query fails
             if isinstance(e, psycopg2.DatabaseError) and "aborted" in str(e):       # If query fails due to aborted transaction
                 self.conn.rollback()        
-                self.conn.cursor()  
+                self.conn.cursor()
             else:       # If query fails due to other reason
                 print("Error: ", e)      
+        except psycopg2.errors.InterfaceError as e:
+            if 'cursor already closed' in str(e):
+                self.cur.close()                    # Close cursor
+                self.conn = psycopg2.connect(
+                    host='localhost',      
+                    database='flaskdb',
+                    user='log',
+                    password='log123'
+                )
+                self.cur = self.conn.cursor()       # Define new cursor
+            else:
+                print("Error: ", e)
+                
 
     # Method to authenticate staff credentials
     def auth_staff(self, user, key):      # Pass user name & password
@@ -45,7 +58,7 @@ class Portal:       # Define class
         ### Error handling for user name ###
         query = "SELECT staff_id FROM staff_accounts WHERE user_name = %s"      # Query to get id for user name
         self.cur.execute(query, (user,))     # Execute query
-        id = self.cur.fetchone()     # Define fetched staff id as id
+        id = self.cur.fetchone()[0]     # Define fetched staff id as id
         query = "SELECT key FROM staff_keys WHERE staff_id = %s"        # Query to select password with matching id for comparison
         self.cur.execute(query, (id,))       # Execute query
         stored_key = self.cur.fetchone()     # Define fetched encrypted password
