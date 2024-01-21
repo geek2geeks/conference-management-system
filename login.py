@@ -59,15 +59,19 @@ class Portal:       # Define class
         query = "SELECT staff_id FROM staff_accounts WHERE user_name = %s"      # Query to get id for user name
         self.cur.execute(query, (user,))     # Execute query
         id = self.cur.fetchone()[0]     # Define fetched staff id as id
+        query = "SELECT role FROM staff_accounts WHERE user_name = %s"      # Query to get role for user name
+        self.cur.execute(query, (user,))
+        role = self.cur.fetchone()[0]       # Fetch role
         query = "SELECT key FROM staff_keys WHERE staff_id = %s"        # Query to select password with matching id for comparison
         self.cur.execute(query, (id,))       # Execute query
-        stored_key = self.cur.fetchone()     # Define fetched encrypted password
+        stored_key = self.cur.fetchone()     # Fetch encrypted password
         stored_key_bytes = stored_key[0].tobytes()      # Convert to bytes for comparison
         if stored_key and bcrypt.checkpw(key.encode('utf-8'), stored_key_bytes):        # If stored password matches key set error as none   
-            error = "None"     
+            self.close_conn()       # Close connection
+            return(True, id, role)     
         else:       # Else set error as...
-            error = "Invalid credentials. Please try again..."
-        return error        # Return error message
+            self.close_conn()       # Close connection
+        return (False, None, None)       
 
     # Method to authenticate customer credentials    
     def auth_customer(self, email, key):        # Pass email & password
