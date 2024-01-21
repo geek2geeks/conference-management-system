@@ -6,19 +6,46 @@ Dashboard
 
 {% block content %}
     <div class="content">
-        <h1>User Dashboard</h1>
+        
+        <h1>{{ first_name }}'s Dashboard</h1>
         
         <!-- User Profile Details -->
         <section>
             <h2>Profile Details</h2>
-            <!-- Display user profile information here -->
+            <p>Full Name: {{ first_name }} {{last_name}}</p>
+            <p>Company: {{ company }}</p>
+            <p>Email: {{ email }}</p>
+            <p>Phone Number: 0{{ phone_number }}</p>
         </section>
 
-        <!-- Booking History -->
         <section>
-            <h2>Booking History</h2>
-            <!-- Display user's booking history here -->
-            <!-- Implement dynamic content display based on the logged-in user's data -->
+            <br>
+            <h2>Payment Methods</h2>
+            <p>
+                {% for i in payment_methods %}
+                    <li>{{ i }}</li>
+                {% endfor %}
+            </p>
+        </section>
+
+        <section>
+            <br>
+            <h2> Create New Booking</h2>
+            <div class="image-container"> + </div>
+                <!-- Link to create new bookings -->
+                <!-- Implement dynamic content display based on the logged-in user's data -->
+        </section>
+
+        <section>
+            <br>
+            <h2> Booking History</h2>
+            <div class="row">
+                <!-- Info not displayed correctly -->
+                {% for i in bookings %}
+                    <div class="image-container">{{ i }}</div>
+                {% endfor %}
+            </div>
+            
         </section>
         
         <!-- Other User-Specific Content -->
