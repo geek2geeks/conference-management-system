@@ -1,10 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from login import Portal
+from customer import Client
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 
 log = Portal()
+client = Client()
 
 # Route for the home page
 @app.route('/')
@@ -117,13 +119,31 @@ def book():
 @app.route('/dashboard')
 def dashboard():
     if session.get('logged_in') == True:        # Get session logged in status
-        print("logged in")
-        print(session['user_id'])       # Get session user id
-        return render_template('dashboard.html')
+        log.check_curr_block()
+        query = 'SELECT * FROM customer_accounts WHERE customer_id = %s'
+        log.cur.execute(query, (session['user_id'],))
+        profile = log.cur.fetchall()
+        user_id = profile[0][0]
+        first_name = profile[0][1]
+        last_name = profile[0][2]
+        email = profile[0][3]
+        phone_number = profile[0][4]
+        company = profile[0][5]
+        client.check_curr_block()
+        query_bookings = ("SELECT bookings.event_date, conference_facilities.name, conference_facilities.location FROM bookings JOIN conference_facilities ON bookings.conference_id_foreign = conference_facilities.conference_id WHERE customer_id_foreign = %s AND booking_status != 'cancelled' ORDER BY event_date DESC")
+        client.cur.execute(query_bookings, (session['user_id'],))
+        bookings = client.cur.fetchall()
+        query_pay = 'SELECT bank, payment_type, expiry_date FROM payment_methods WHERE customer_id_foreign = %s'
+        client.cur.execute(query_pay, (session['user_id'],))
+        payment_methods = client.cur.fetchall()
+        bank=payment_methods[0][0]
+
+        return render_template('dashboard.html', user_id=user_id, first_name=first_name, last_name=last_name, email=email, 
+                               phone_number=phone_number, company=company, bank=bank, payment_methods=payment_methods, bookings=bookings)
     else:
         print("not logged in")
         return redirect(url_for('login'))      # Redirect to login page
-    
+
 
 @app.route('/about')
 def about():
