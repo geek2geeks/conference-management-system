@@ -87,7 +87,7 @@ cur.execute("CREATE TABLE payment_methods ("
             "customer_id_foreign INTEGER NOT NULL REFERENCES customer_accounts (customer_id),"
             "bank VARCHAR(25) NOT NULL,"
             "payment_type payment_method NOT NULL,"
-            "account_number INTEGER NOT NULL,"
+            "account_number BIGINT NOT NULL,"
             "expiry_date DATE NOT NULL);")
 
 # Create table for bookings
