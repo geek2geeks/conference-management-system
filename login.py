@@ -135,3 +135,71 @@ class Portal:       # Define class
             return True
         else:
             return False
+
+
+class Client:
+    def __init__(self):
+        self.conn = psycopg2.connect(
+            host='localhost',
+            database='flaskdb',
+            user='client',
+            password='client123'
+        )
+        self.cur = self.conn.cursor()
+
+    
+    def close_conn(self):
+        self.cur.close()
+        self.conn.close()
+
+    
+    def check_curr_block(self):     # Pass current block
+        try:        # Try to execute query
+            self.cur.execute("SELECT conference_id FROM conference_facilities")        # Query to check if current block is valid            
+        except psycopg2.errors.InFailedSqlTransaction as e:     # If query fails
+            if isinstance(e, psycopg2.DatabaseError) and "aborted" in str(e):       # If query fails due to aborted transaction
+                self.conn.rollback()        
+                self.conn.cursor()
+            else:       # If query fails due to other reason
+                print("Error: ", e)      
+        except psycopg2.errors.InterfaceError as e:
+            if 'cursor already closed' in str(e):
+                self.cur.close()                    # Close cursor
+                self.conn = psycopg2.connect(
+                    host='localhost',      
+                    database='flaskdb',
+                    user='client',
+                    password='client123'
+                )
+                self.cur = self.conn.cursor()       # Define new cursor
+            else:
+                print("Error: ", e)
+
+class Staff:
+    def __init__(self):
+        self.conn = psycopg2.connect(
+            host='localhost',      
+            database='flaskdb',
+            user='staff',
+            password='staff123'
+        )
+        self.cur = self.conn.cursor()
+
+    
+    def close_conn(self):
+        self.cur.close()
+        self.conn.close()
+
+
+class Admin:
+    def __init__(self):
+        self.conn = psycopg2.connect(
+            host='localhost',
+            database='flaskdb',
+            user='staff_admin',
+            password='staff_admin123'
+        )
+
+    def close_conn(self):
+        self.cur.close()
+        self.conn.close()
