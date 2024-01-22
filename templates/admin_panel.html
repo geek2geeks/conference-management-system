@@ -11,9 +11,9 @@ Admin Panel
     <div>
         <h2>Search...</h2>
         <table>
-            <tr>
-                <td>
-                    <form>
+            <form action="{{ url_for('admin_panel') }}" method="post">
+                <tr>
+                    <td>
                         <label for="menu1">Column 1:</label>
                         <select id="menu1" name="menu1" onchange="updateColumn2Options()">
                             <option value="customer_accounts">Customer Accounts</option>
@@ -22,6 +22,7 @@ Admin Panel
                             <option value="catering_options">Catering Options</option>
                         </select>
                     </td>
+                    <td></td>
                     <td>
                         <label for="menu2">Column 2:</label>
                         <select id="menu2" name="menu2">
@@ -31,7 +32,7 @@ Admin Panel
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td>
                         <input type="checkbox" id="renderColumn3" onchange="toggleColumn3()">
                         <label for="renderColumn3">Render Column 3 and Input Box</label>
                     </td>
@@ -43,13 +44,26 @@ Admin Panel
                             <option value="">Select...</option>
                         </select>
                     </td>
+                    <td></td>
                     <td>
                         <label for="input_box">Input Box:</label>
-                        <input type="text" id="input_box" name="input_box">
-                    </form>
-                </td>
-            </tr>
+                        <input type="text" id="input_box" name="input_box">                    
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td>
+                        <button type="submit">Search</button>
+                    </td>
+                </tr>
+            </form>
         </table>
+        <h2>Results...</h2>
+        <p>
+            {% for i in results %}
+                <li>{{ i }}</li>
+            {% endfor %}
+        </p>
     
         <script>
             function updateColumn2Options() {
@@ -120,17 +134,6 @@ Admin Panel
             }
         </script>
 
-        <form method="post">
-            <!-- ... (existing form elements) ... -->
-
-            <button type="submit">Submit</button>
-        </form>
-
-        <!-- Display the message when it exists -->
-        {% if message %}
-            <p>{{ message }}</p>
-        {% endif %}
-
         <script>
             // Add JavaScript to show/hide the paragraph based on button click
             document.addEventListener('DOMContentLoaded', function() {
@@ -146,3 +149,4 @@ Admin Panel
     </div>
 </div>
 {% endblock %}
+
