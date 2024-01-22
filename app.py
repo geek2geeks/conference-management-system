@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from login import Portal
-from customer import Client
+from login import Portal, Client, Staff, Admin
 
 app = Flask(__name__)
 app.secret_key = 'secret_key'
 
 log = Portal()
 client = Client()
+staff = Staff()
+admin = Admin()
 
 # Route for the home page
 @app.route('/')
@@ -101,8 +102,21 @@ def manage_bookings():
 
 @app.route('/admin_panel', methods=['GET', 'POST'])
 def admin_panel():
+    results = None
+    if request.method == 'POST':
+        menu1 = request.form.get('menu1')
+        menu2 = request.form.get('menu2')
+        menu3 = request.form.get('menu3')
+        input_box = request.form.get('input_box')
+        if menu1 is not None and menu2 is not None:
+            if menu3 is None:
+                query = 'SELECT %s FROM %s' % (menu1, menu2)
+            else:
+                query = 'SELECT %s FROM %s WHERE %s = %s' % (menu1, menu2, menu3, input_box)
+            staff.cur.execute(query)
+            results = staff.cur.fetchall()
     if session.get('logged_in') == True:       # Get session logged in status
-        return render_template('admin_panel.html')       
+        return render_template('admin_panel.html', results=results)       
     else:
         return redirect(url_for('admin_login'))      # Redirect to login page
 
