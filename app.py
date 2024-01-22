@@ -103,20 +103,27 @@ def manage_bookings():
 @app.route('/admin_panel', methods=['GET', 'POST'])
 def admin_panel():
     results = None
+    where_col = None
+    select_col = None
     if request.method == 'POST':
-        menu1 = request.form.get('menu1')
+        table = request.form.get('menu1')
         menu2 = request.form.get('menu2')
-        menu3 = request.form.get('menu3')
-        input_box = request.form.get('input_box')
-        if menu1 is not None and menu2 is not None:
-            if menu3 is None:
-                query = 'SELECT %s FROM %s' % (menu1, menu2)
+        if menu2 == 'All':
+            select_col = '*'
+        else:
+            pass
+        where_col = request.form.get('menu3')
+        find_var = request.form.get('input_box')
+        if table != None and select_col != None:
+            if where_col is None:
+                query = 'SELECT %s FROM %s' % (select_col, table)
             else:
-                query = 'SELECT %s FROM %s WHERE %s = %s' % (menu1, menu2, menu3, input_box)
+                query = 'SELECT %s FROM %s WHERE %s = %s' % (select_col, table, where_col, find_var)
             staff.cur.execute(query)
             results = staff.cur.fetchall()
+            return render_template('admin_panel.html', results=results)
     if session.get('logged_in') == True:       # Get session logged in status
-        return render_template('admin_panel.html', results=results)       
+        return render_template('admin_panel.html')       
     else:
         return redirect(url_for('admin_login'))      # Redirect to login page
 
@@ -150,7 +157,7 @@ def dashboard():
         query_pay = 'SELECT bank, payment_type, expiry_date FROM payment_methods WHERE customer_id_foreign = %s'
         client.cur.execute(query_pay, (session['user_id'],))
         payment_methods = client.cur.fetchall()
-        bank=payment_methods[0][0]
+        bank = payment_methods[0][0]
 
         return render_template('dashboard.html', user_id=user_id, first_name=first_name, last_name=last_name, email=email, 
                                phone_number=phone_number, company=company, bank=bank, payment_methods=payment_methods, bookings=bookings)
