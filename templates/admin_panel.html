@@ -8,5 +8,141 @@ Admin Panel
 <div class="content">
     <h1>Admin Panel</h1>
     <!-- Interface for admins to manage users, bookings, facilities, etc. -->
+    <div>
+        <h2>Search...</h2>
+        <table>
+            <tr>
+                <td>
+                    <form>
+                        <label for="menu1">Column 1:</label>
+                        <select id="menu1" name="menu1" onchange="updateColumn2Options()">
+                            <option value="customer_accounts">Customer Accounts</option>
+                            <option value="customer_bookings">Bookings</option>
+                            <option value="conference_facilities">Conference Facilities</option>
+                            <option value="catering_options">Catering Options</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label for="menu2">Column 2:</label>
+                        <select id="menu2" name="menu2">
+                            <!-- Options will be dynamically updated based on Column 1 selection -->
+                            <option value="">Select...</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="checkbox" id="renderColumn3" onchange="toggleColumn3()">
+                        <label for="renderColumn3">Render Column 3 and Input Box</label>
+                    </td>
+                </tr>
+                <tr id="column3Row" style="display: none;">
+                    <td>
+                        <label for="menu3">Column 3:</label>
+                        <select id="menu3" name="menu3">
+                            <option value="">Select...</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label for="input_box">Input Box:</label>
+                        <input type="text" id="input_box" name="input_box">
+                    </form>
+                </td>
+            </tr>
+        </table>
+    
+        <script>
+            function updateColumn2Options() {
+                var column1Value = document.getElementById("menu1").value;
+                var column2Select = document.getElementById("menu2");
+    
+                // Clear existing options
+                column2Select.innerHTML = '<option value="">Select...</option>';
+    
+                // Add options based on the selected value in Column 1
+                if (column1Value === "customer_accounts") {
+                    addOption(column2Select, "All");
+                    addOption(column2Select, "Email");
+                    addOption(column2Select, "Company");
+                } else if (column1Value === "customer_bookings") {
+                    addOption(column2Select, "All");
+                } else if (column1Value === "conference_facilities") {
+                    addOption(column2Select, "All");
+                    addOption(column2Select, "Name, Location");
+                    addOption(column2Select, "Name, Capacity, Price");
+                } else if (column1Value === "catering_options") {
+                    addOption(column2Select, "All");
+                    addOption(column2Select, "Name, Cuisine, Price");
+                }
+            }
+    
+            function addOption(selectElement, optionText) {
+                var option = document.createElement("option");
+                option.value = optionText.toLowerCase().replace(/\s/g, ''); // Convert to lowercase and remove spaces
+                option.text = optionText;
+                selectElement.add(option);
+            }
+    
+            function toggleColumn3() {
+                var renderColumn3Checkbox = document.getElementById("renderColumn3");
+                var column3Row = document.getElementById("column3Row");
+    
+                // Show or hide Column 3 and Input Box based on the checkbox state
+                column3Row.style.display = renderColumn3Checkbox.checked ? "table-row" : "none";
+
+                if (renderColumn3Checkbox.checked) {
+                    updateColumn3Options();
+                }
+            }
+
+            function updateColumn3Options() {
+                var column1Value = document.getElementById("menu1").value;
+                var column3Select = document.getElementById("menu3");
+    
+                // Clear existing options
+                column3Select.innerHTML = '<option value="">Select...</option>';
+    
+                // Add options based on the selected value in Column 1
+                if (column1Value === "customer_accounts") {
+                    addOption(column3Select, "Last Name");
+                    addOption(column3Select, "Email");
+                    addOption(column3Select, "Company");
+                } else if (column1Value === "customer_bookings") {
+                    addOption(column3Select, "All");
+                } else if (column1Value === "conference_facilities") {
+                    addOption(column3Select, "All");
+                    addOption(column3Select, "Name, Location");
+                    addOption(column3Select, "Name, Capacity, Price");
+                } else if (column1Value === "catering_options") {
+                    addOption(column3Select, "All");
+                    addOption(column3Select, "Name, Cuisine, Price");
+                }
+            }
+        </script>
+
+        <form method="post">
+            <!-- ... (existing form elements) ... -->
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Display the message when it exists -->
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+
+        <script>
+            // Add JavaScript to show/hide the paragraph based on button click
+            document.addEventListener('DOMContentLoaded', function() {
+                var button = document.querySelector('button');
+                var paragraph = document.querySelector('p');
+
+                button.addEventListener('click', function() {
+                    paragraph.style.display = 'block';
+                });
+            });
+        </script>
+
+    </div>
 </div>
 {% endblock %}
