@@ -127,6 +127,11 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+# Local virtualenv committed to this repository by mistake; untracked again.
+myenv/
+
+# Visual Studio / IIS Express local state
+.vs/
 
 # Spyder project settings
 .spyderproject

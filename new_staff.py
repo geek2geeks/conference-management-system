@@ -1,13 +1,16 @@
+import getpass
+import os
+
 import psycopg2
 
-# Connect to database
+# Connect to database. Credentials come from the environment, never from source:
+#   PGHOST (default localhost), PGDATABASE (default flaskdb), PGUSER (default
+#   postgres), PGPASSWORD (prompted for when unset). See .env.example.
 conn = psycopg2.connect(
-    host="localhost",
-    database="flaskdb",
-    # user=input("PostgreSQL master user: "),
-    user=("postgres"),
-    # password=input("PostgreSQL master password: ")
-    password=("darTesw")
+    host=os.getenv("PGHOST", "localhost"),
+    database=os.getenv("PGDATABASE", "flaskdb"),
+    user=os.getenv("PGUSER", "postgres"),
+    password=os.getenv("PGPASSWORD") or getpass.getpass("PostgreSQL master password: "),
 )
 
 # Cursor for executing queries
