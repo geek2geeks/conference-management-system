@@ -16,7 +16,9 @@ def login():
         # Here, add logic to verify email and password with the database
         # If login fails, set error = 'Invalid credentials. Please try again.'
         # If successful, redirect to user dashboard or another appropriate page
-    return render_template('login.html', error=error)
+    # The template file is tracked as templates/Login.html; reference it with the
+    # exact case so the lookup also works on a case-sensitive checkout.
+    return render_template('Login.html', error=error)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
